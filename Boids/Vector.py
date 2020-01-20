@@ -1,25 +1,42 @@
-#!/usr/bin/env python3
-from math import *
-import random as rand
+import math
 
-class Vector():
+class Vector(object):
     def __init__(self, *args):
-        if len(args)==0: 
-            self.x, self.y = (0,0)
-        else: 
-            self.x, self.y = args
+        """ Create a vector, example: v = Vector(1,2) """
+        if len(args)==0: self.values = (0,0)
+        else: self.values = args
+        
+    def norm(self):
+        """ Returns the norm (length, magnitude) of the vector """
+        return math.sqrt(sum( comp**2 for comp in self ))
+
+    def normalize(self):
+        """ Returns a normalized unit vector """
+        norm = self.norm()
+        normed = tuple( comp/norm for comp in self )
+        return Vector(*normed)
     
     def __add__(self, other):
-        return Vector(self.x+other.x,self.y+other.y)
+        """ Returns the vector addition of self and other """
+        added = tuple( a + b for a, b in zip(self, other) )
+        return Vector(*added)
     
     def __sub__(self, other):
-        return Vector(self.x-other.x,self.y-other.y)
+        """ Returns the vector difference of self and other """
+        subbed = tuple( a - b for a, b in zip(self, other) )
+        return Vector(*subbed)
     
-    def __mul__(self,other):
-        if isinstance(other, (float, int)):
-            return Vector(self.x*other, self.y*other)
-        if type(other) == type(self):
-            return Vector(self.x*other.x, self.y*other.y)
-
-    def len(self):
-        return sqrt(pow(self.x)+pow(self.y))
+    def __iter__(self):
+        return self.values.__iter__()
+    
+    def __len__(self):
+        return len(self.values)
+    
+    def __getitem__(self, key):
+        return self.values[key]
+    
+    def haveValue(self):
+        return self.values
+        
+    def __repr__(self):
+        return str(self.values)

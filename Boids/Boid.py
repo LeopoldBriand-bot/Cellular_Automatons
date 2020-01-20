@@ -1,25 +1,20 @@
-#!/usr/bin/env python3
 from Vector import *
-import math
-from random import random
+from kivy.uix.widget import Widget
+from kivy.lang import Builder
+Builder.load_file('./Boids.kv')
 
-class Boid():
+class Boid(Widget):
+    def __init__(self, position=Vector(0,0),velocity=Vector(0,0), **kwargs):
+        super(Boid, self).__init__(**kwargs)
+        self.position = position
+        self.velocity = velocity
+        self.nearBoids = []
 
-    def __init__(self, x, y, parent):
-        self.parent = parent
-        self.position = Vector(x, y)
-        velVector = ((random() - 0.5)*10,(random() - 0.5)*10)
-        accVector = ((random() - 0.5)/2,(random() - 0.5)/2)
-        self.velocity = Vector(*velVector)
-        self.acceleration = Vector(*accVector)
-        self.create()
-    
-    def create(self):
-        self.body = self.parent.canvas.create_oval(self.position.x+3, self.position.y+3,self.position.x-3, self.position.y-3, fill='white')
-    
-    def update(self,parent):
-        self.position += self.velocity
-        self.velocity += self.acceleration
-        self.parent.canvas.move(self.body,self.position.x,self.position.y)
-    
-    
+    def searchForNearBoids(self, boids, distanceMax, enabled):
+        if enabled:
+            for boid in boids:
+                distance = sqrt(pow(boid.position[0]-self.position[0])+pow(boid.position[1]-self.position[1]))
+                if distance < distanceMax and boid != self:
+                    self.nearBoids.append(boid)
+        else:
+            self.nearBoids = boids

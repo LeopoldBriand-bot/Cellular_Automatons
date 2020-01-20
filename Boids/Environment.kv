@@ -1,0 +1,12 @@
+#:kivy 1.11.1
+
+<Environment>:
+    canvas.before:
+        BorderImage:
+            border: 5, 5, 5, 5
+            source: './assets/background.jpg'
+            pos: self.pos
+            size: self.size
+    
+    Boid:
+        center: self.parent.center
