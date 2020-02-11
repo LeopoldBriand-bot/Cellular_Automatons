@@ -6,19 +6,19 @@
         <b-button-toolbar id="default-toolbar" key-nav aria-label="Toolbar with button groups">
           <b-button-group class="mx-1">
             <b-button @click="buttonPlayPress">
-                <b-icon icon="arrow-up"></b-icon>
+                <b-icon :icon="playIconState"></b-icon>
             </b-button>
             <b-button @click="buttonForwardPress">
-                <b-icon icon="arrow-up"></b-icon>
+                <b-icon icon="forward"></b-icon>
             </b-button>
           </b-button-group>
           <b-button-group class="mx-1">
-              <b-button>Reset</b-button>
+              <b-button @click="buttonResetPress">Reset</b-button>
           </b-button-group>
         </b-button-toolbar>
         <slot name="headerOptions"></slot>
       </template>
-      <slot name="environment"></slot>           
+      <slot name="environment"></slot>
     </b-card>
   </div>
 </template>
@@ -34,7 +34,7 @@ export default {
       playIconState: "play"
     }
   },
-  method: {
+  methods: {
     buttonPlayPress() {
       if(this.state==='paused') {
         this.state='played';
@@ -42,7 +42,7 @@ export default {
         this.playIconState = "pause"
       }
       else if(this.state==='played'){
-        this.state = 'pause';
+        this.state = 'paused';
         this.$emit('play', false);
         this.playIconState = "play"
       }
